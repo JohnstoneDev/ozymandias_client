@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import Booklist from './Booklist'
 import CollectedBooks from './CollectedBooks'
+import ReviewList from './ReviewsList'
 import { Link, Switch, Route } from "react-router-dom"
 
 
@@ -10,6 +11,11 @@ import { Link, Switch, Route } from "react-router-dom"
 function Navigation(){
     return(
         <>
+            <div>
+                <Link to="/">Book List</Link>
+                <Link to="/collection">Collected Books</Link>
+                <Link to="/reviews">Reviews</Link>
+            </div>
         </>
     )
 }
@@ -34,6 +40,7 @@ function MainDisplay(){
 
     useEffect(() => {
         getBooks();
+        getCollectedBooks();
     },[getBooks,criteria])
 
 
@@ -53,7 +60,6 @@ function MainDisplay(){
         if(typedCriteria !== " ") setCriteria(typedCriteria); 
 
         getBooks()
-        getCollectedBooks();
     }
 
     function SearchBar(){
@@ -67,9 +73,23 @@ function MainDisplay(){
 
     return (
         <div className='my-4 '>
-            <SearchBar />
-            <Booklist books={books}/>
-            <CollectedBooks books={collectedBooks}/>
+            <Switch>
+                <Route exact path="/">
+                    <SearchBar />
+                    <Booklist books={books}/>
+
+                </Route>
+
+                <Route exact path="/collections">
+                    <CollectedBooks books={collectedBooks}/>
+
+                </Route>
+
+                <Route exact path="/reviews" >
+                    <ReviewList />
+                </Route>
+                
+            </Switch>
         </div>
     )
 }

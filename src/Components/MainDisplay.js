@@ -16,7 +16,8 @@ function Navigation(){
 
 function MainDisplay(){ 
     const [criteria, setCriteria ] = useState('philosophy')
-    const [books, setBooks ] = useState([])
+    const [books, setBooks ] = useState([]);
+    const [collectedBooks, setCollectedBooks ] = useState([]);
 
     const criteriaRef = useRef(criteria);
 
@@ -36,6 +37,15 @@ function MainDisplay(){
     },[getBooks,criteria])
 
 
+    function getCollectedBooks(){
+        fetch('http://localhost:3000/books')
+        .then(r => r.json())
+        .then(d => {
+            console.log(d)
+            setCollectedBooks(d)
+        })
+    }
+
     function handleSubmit(e){
         e.preventDefault()
         const typedCriteria = criteriaRef.current.value;
@@ -43,6 +53,7 @@ function MainDisplay(){
         if(typedCriteria !== " ") setCriteria(typedCriteria); 
 
         getBooks()
+        getCollectedBooks();
     }
 
     function SearchBar(){
@@ -58,7 +69,7 @@ function MainDisplay(){
         <div className='my-4 '>
             <SearchBar />
             <Booklist books={books}/>
-            <CollectedBooks books={books}/>
+            <CollectedBooks books={collectedBooks}/>
         </div>
     )
 }

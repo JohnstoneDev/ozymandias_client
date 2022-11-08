@@ -1,4 +1,6 @@
 function Booklist( { books }){
+    console.log(books);
+    
     return (
         <>
         </>

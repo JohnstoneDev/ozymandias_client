@@ -1,4 +1,4 @@
-import { useRef , useState } from 'react';
+import { useRef } from 'react';
 import defaultImage  from '../Default-Image.png'
 
 function BookInDB({ book, clickFunction, buttonMessage, updateBookReview }){
@@ -21,7 +21,7 @@ function BookInDB({ book, clickFunction, buttonMessage, updateBookReview }){
                     const newComm = commentRef.current.value
                     updateBookReview(id,newComm)
                 }}>
-                    <input type="text" ref={commentRef} placeholder='Add Comments Here'/>
+                    <input type="text" ref={commentRef} placeholder='Add Comments Here' className='text-black'/>
                     <button type='submit'>Update Review</button>
                 </form>
                 <button onClick={() => clickFunction(id)}>{buttonMessage}</button>

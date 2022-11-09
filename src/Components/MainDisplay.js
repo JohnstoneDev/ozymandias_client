@@ -42,24 +42,15 @@ function MainDisplay(){
         .catch(e => console.log(e))
     },[booksUrl])
 
-    useEffect(() => {
-        fetch(booksUrl)
-        .then(r => r.json())
-        .then(d => {setBooks(d.items)})
-        .catch(e => console.log(e))
-    },[booksUrl]);
 
     function handleSubmit(e){
         e.preventDefault()
         const typedCriteria = criteriaRef.current.value;
-
         if(typedCriteria !== " ") setCriteria(typedCriteria); 
-
-        getBooks()
-        
+        getBooks()        
     }
 
-    
+   
     function SearchBar(){
         return (
             <form onSubmit={handleSubmit} className="text-slate-700 p-3 ">
@@ -71,7 +62,8 @@ function MainDisplay(){
 
     useEffect(() => {
         getCollectedBooks();
-    },[criteria])
+        getBooks()
+    },[getBooks,criteria])
 
     return (
         <div className='my-4'>
@@ -96,9 +88,3 @@ function MainDisplay(){
 }
 
 export default MainDisplay;
-
-
-// <Route path="" component={<Booklist apiBooks={books}/>} >
-//                     {/* <SearchBar > */}
-//                     {/* <Booklist apiBooks={books}/> */}
-//                 </Route>

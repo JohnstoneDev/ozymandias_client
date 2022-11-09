@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef, useCallback } from 'react'
-import Booklist from './Booklist'
+import { Link, Switch, Route } from "react-router-dom";
+import { useEffect, useState, useRef, useCallback } from 'react';
 import CollectedBooks from './CollectedBooks'
 import ReviewList from './ReviewsList'
-import { Link, Switch, Route } from "react-router-dom"
+import Booklist from './Booklist'
 
 
 // Main Component, Everything else is nested here and accesses state as props  
@@ -11,8 +11,8 @@ import { Link, Switch, Route } from "react-router-dom"
 function Navigation(){
     return(
         <>
-            <div>
-                <Link to="/">Book List</Link>
+            <div className='flex gap-4 items-center align-middle justify-center'>
+                <Link to="/">Available Books</Link>
                 <Link to="/collection">Collected Books</Link>
                 <Link to="/reviews">Reviews</Link>
             </div>
@@ -21,37 +21,30 @@ function Navigation(){
 }
 
 function MainDisplay(){ 
-    const [criteria, setCriteria ] = useState('philosophy')
     const [books, setBooks ] = useState([]);
     const [collectedBooks, setCollectedBooks ] = useState([]);
-
+    const [criteria, setCriteria ] = useState('philosophy');
+    
     const criteriaRef = useRef(criteria);
 
-    let booksUrl = `https://www.googleapis.com/books/v1/volumes?q=${criteria}`
-
-    const getBooks = useCallback(() => {
-            fetch(booksUrl)
-            .then(r => r.json())
-            .then(d => {
-                setBooks(d.items)
-                })
-            .catch(e => console.log(e))
-        },[booksUrl]);
-
-    useEffect(() => {
-        getBooks();
-        getCollectedBooks();
-    },[getBooks,criteria])
-
+    let booksUrl = `https://www.googleapis.com/books/v1/volumes?q=philosophy'}`
 
     function getCollectedBooks(){
         fetch('http://localhost:3000/books')
         .then(r => r.json())
-        .then(d => {
-            console.log(d)
-            setCollectedBooks(d)
-        })
+        .then(d => { setCollectedBooks(d)})
+        .catch(e => console.log(e))
     }
+    
+    useEffect(() => {
+        fetch(booksUrl)
+        .then(r => r.json())
+        .then(d => {
+            setBooks(d.items)
+            console.log("returnnnedddd",d.items)
+        })
+        .catch(e => console.log(e))
+    },[booksUrl]);
 
     function handleSubmit(e){
         e.preventDefault()
@@ -59,9 +52,10 @@ function MainDisplay(){
 
         if(typedCriteria !== " ") setCriteria(typedCriteria); 
 
-        getBooks()
+        
     }
 
+    
     function SearchBar(){
         return (
             <form onSubmit={handleSubmit}>
@@ -71,27 +65,39 @@ function MainDisplay(){
         )
     }
 
+    useEffect(() => {
+        getCollectedBooks();
+    },[criteria])
+
     return (
-        <div className='my-4 '>
-            <Switch>
-                <Route exact path="/">
-                    <SearchBar />
-                    <Booklist books={books}/>
-
+        <div className='my-4'>
+             <Navigation />
+          <Switch>
+               
+                <Route path="/collection">
+                    <CollectedBooks books={collectedBooks} />
                 </Route>
 
-                <Route exact path="/collections">
-                    <CollectedBooks books={collectedBooks}/>
-
-                </Route>
-
-                <Route exact path="/reviews" >
+                <Route path="/reviews">
                     <ReviewList />
                 </Route>
+
+                <Route path="/">
+                    {/* <SearchBar /> */}
+                    <Booklist apiBooks={books} />
+                </Route>
                 
-            </Switch>
-        </div>
+          </Switch>
+ 
+
+         </div>
     )
 }
 
 export default MainDisplay;
+
+
+// <Route path="" component={<Booklist apiBooks={books}/>} >
+//                     {/* <SearchBar > */}
+//                     {/* <Booklist apiBooks={books}/> */}
+//                 </Route>

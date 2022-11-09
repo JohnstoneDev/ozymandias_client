@@ -5,7 +5,7 @@ function BookInDB({ book, clickFunction, buttonMessage }){
     return (
         <>  
              <div className="flex gap-2 text-slate-300 align-middle justify-center my-3 max-h-30">
-                <img src={ image_one || image_two} alt="" className="object-cover h-80 w-90 shadow-2xl"/>
+                <img src={ image_one || image_two || defaultImage } alt="" className="object-cover h-80 w-90 shadow-2xl"/>
                 <div className="text-left">
                 <h3>{title}</h3>
                 <h3>{page_count} Pages</h3>

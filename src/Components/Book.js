@@ -1,8 +1,8 @@
 import defaultImage  from '../Default-Image.png'
 
-function Book({ book} ) {
+function Book({ book , buttonMessage, clickFunction} ) {
 
-    const {id, volumeInfo } = book; 
+    const { id, volumeInfo } = book; 
     const {title, authors, publisher, publishedDate, imageLinks,  pageCount } = volumeInfo;  
         
     return (
@@ -14,7 +14,7 @@ function Book({ book} ) {
                 <h3>{pageCount} Pages</h3>
                 <h4>Authors : {authors}</h4>
                 <h5>Published By : {publisher}, {publishedDate}</h5>
-                <button>Add To Collection</button>
+                <button onClick={() => clickFunction(id)}>{buttonMessage}</button>
                 </div>
             </div>
         </>

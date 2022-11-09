@@ -60,6 +60,44 @@ function MainDisplay(){
         )
     }
 
+    function addBookToCollection(receivedId){
+
+        const selectedBook = books.find((book) => book.id === receivedId )
+        
+        const { volumeInfo } = selectedBook; 
+        const {title, authors, publisher, publishedDate, imageLinks,  pageCount } = volumeInfo;  
+
+        const bookData ={
+            title : title,
+            author : authors[0],
+            publisher : publisher,
+            published_date : publishedDate,
+            page_count : pageCount,
+            image_one : imageLinks.smallThumbnail,
+            image_two : imageLinks.thumbnail,
+            review : ""
+        }
+
+        console.log(bookData);
+
+        fetch("http://localhost:3000/books",{
+            method : "POST",
+            headers : {
+                'Content-Type' : "application/json",
+            },
+            body : JSON.stringify(bookData)
+        })
+        .then(r => r.json())
+        .then(d => {
+            setCollectedBooks(...collectedBooks,d)
+        })
+        .catch(e => console.log(e))
+    }
+
+    function removeBookFromCollection(id){
+
+    }
+
     useEffect(() => {
         getCollectedBooks();
         getBooks()
@@ -70,7 +108,7 @@ function MainDisplay(){
             <Navigation />
             <Switch>
                 <Route path="/collection">
-                    <CollectedBooks books={collectedBooks}/>
+                    <CollectedBooks books={collectedBooks} clickFunction={removeBookFromCollection} buttonMessage={"Delete Book"}/>
                 </Route>
 
                 <Route path="/reviews">
@@ -79,7 +117,7 @@ function MainDisplay(){
 
                 <Route path="/">
                     <SearchBar />
-                    <Booklist books={books}/>
+                    <Booklist books={books} clickFunction={addBookToCollection} buttonMessage={"Add To Collection"}/>
                 </Route>
 
             </Switch>

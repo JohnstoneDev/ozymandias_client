@@ -3,9 +3,9 @@ import Review from "./Review";
 
 function ReviewList(){
     return (
-        <>
-        {/* Render Review Items here */}
-        </>
+        <div className="h-screen">
+            Render Review Items here
+        </div>
     )
 }
 

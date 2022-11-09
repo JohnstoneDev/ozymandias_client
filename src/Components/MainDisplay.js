@@ -22,7 +22,8 @@ function MainDisplay(){
     const [books, setBooks ] = useState([]);
     const [collectedBooks, setCollectedBooks ] = useState([]);
     const [criteria, setCriteria ] = useState('philosophy');
-    
+    const [reviews, setReviews ] = useState([]);
+
     const criteriaRef = useRef(criteria);
 
     let booksUrl = `https://www.googleapis.com/books/v1/volumes?q=${criteria}`
@@ -31,6 +32,13 @@ function MainDisplay(){
         fetch('http://localhost:3000/books')
         .then(r => r.json())
         .then(d => { setCollectedBooks(d)})
+        .catch(e => console.log(e))
+    }
+
+    function getReviews(){
+        fetch('http://localhost:3000/reviews')
+        .then(r => r.json())
+        .then(d => setReviews(d))
         .catch(e => console.log(e))
     }
     
@@ -80,7 +88,7 @@ function MainDisplay(){
 
         console.log(bookData);
 
-        fetch("http://localhost:3000/books",{
+        fetch(`http://localhost:3000/books`,{
             method : "POST",
             headers : {
                 'Content-Type' : "application/json",
@@ -89,18 +97,49 @@ function MainDisplay(){
         })
         .then(r => r.json())
         .then(d => {
-            setCollectedBooks(...collectedBooks,d)
+            setTimeout(() => {
+                setCollectedBooks([...collectedBooks,d])
+            },3000)
         })
         .catch(e => console.log(e))
     }
 
-    function removeBookFromCollection(id){
-
+    function removeBookFromCollection(passedId){            
+        fetch(`http://localhost:3000/books/${passedId}`,{
+            method : "DELETE",
+            headers : { "Content-Type" : "application/json"},
+        })
+        .then(r => r.json())
+        .then(() =>  setCollectedBooks(collectedBooks.filter(book => book.id !== passedId)))
+        .catch(e => console.log(e))
     }
+
+        function updateBookReview(passedId,updatedComment){  
+            let patchBook = collectedBooks.find(b => b.id == passedId)    
+
+            fetch(`http://localhost:3000/books/${passedId}`,{
+                method : 'PATCH',
+                headers : {
+                    'Content-Type' : "application/json"
+                },
+                body : JSON.stringify({
+                    review : updatedComment
+                })
+            })
+            .then(r => r.json())
+            .then(d => {
+                const newBooks = collectedBooks.map(b => {
+                   return  b.id === passedId ? b = d : b
+                 })
+                setCollectedBooks(newBooks)
+            })
+            .catch(e => console.log(e))
+        }
 
     useEffect(() => {
         getCollectedBooks();
         getBooks()
+        getReviews()
     },[getBooks,criteria])
 
     return (
@@ -108,11 +147,11 @@ function MainDisplay(){
             <Navigation />
             <Switch>
                 <Route path="/collection">
-                    <CollectedBooks books={collectedBooks} clickFunction={removeBookFromCollection} buttonMessage={"Delete Book"}/>
+                    <CollectedBooks books={collectedBooks} clickFunction={removeBookFromCollection} buttonMessage={"Delete Book"} updateBookReview={updateBookReview}/>
                 </Route>
 
                 <Route path="/reviews">
-                    <ReviewList />
+                    <ReviewList reviews={reviews}/>
                 </Route>
 
                 <Route path="/">

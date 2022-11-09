@@ -1,13 +1,8 @@
 import { Link, Switch, Route } from "react-router-dom";
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import CollectedBooks from './CollectedBooks'
-<<<<<<< HEAD
-import { Link, Switch, Route } from "react-router-dom"
-import ReviewList from './ReviewsList'
-=======
 import ReviewList from './ReviewsList'
 import Booklist from './Booklist'
->>>>>>> 8181d0bc04afc23d8668a8c0f5c2e6ec80f17f30
 
 
 // Main Component, Everything else is nested here and accesses state as props  
@@ -15,21 +10,11 @@ import Booklist from './Booklist'
 // Navigation component that houses the links to the pages. 
 function Navigation(){
     return(
-<<<<<<< HEAD
         <div className='flex gap-3 items-center justify-center p-3'>
             <Link to="/" className='border-b-2 hover:text-slate-500 hover:border-b-amber-300'>Home</Link>
             <Link to="/collection" className='border-b-2  hover:text-slate-500 hover:border-b-amber-300' >Collection</Link>
             <Link to="/reviews" className='border-b-2 hover:text-slate-500 hover:border-b-amber-300'>Reviews</Link>
         </div>
-=======
-        <>
-            <div className='flex gap-4 items-center align-middle justify-center'>
-                <Link to="/">Available Books</Link>
-                <Link to="/collection">Collected Books</Link>
-                <Link to="/reviews">Reviews</Link>
-            </div>
-        </>
->>>>>>> 8181d0bc04afc23d8668a8c0f5c2e6ec80f17f30
     )
 }
 
@@ -49,13 +34,12 @@ function MainDisplay(){
         .catch(e => console.log(e))
     }
     
+
+    
     useEffect(() => {
         fetch(booksUrl)
         .then(r => r.json())
-        .then(d => {
-            setBooks(d.items)
-            console.log("returnnnedddd",d.items)
-        })
+        .then(d => {setBooks(d.items)})
         .catch(e => console.log(e))
     },[booksUrl]);
 
@@ -84,18 +68,10 @@ function MainDisplay(){
 
     return (
         <div className='my-4'>
-<<<<<<< HEAD
             <Navigation />
             <Switch>
                 <Route path="/collection">
                     <CollectedBooks books={collectedBooks}/>
-=======
-             <Navigation />
-          <Switch>
-               
-                <Route path="/collection">
-                    <CollectedBooks books={collectedBooks} />
->>>>>>> 8181d0bc04afc23d8668a8c0f5c2e6ec80f17f30
                 </Route>
 
                 <Route path="/reviews">
@@ -103,23 +79,12 @@ function MainDisplay(){
                 </Route>
 
                 <Route path="/">
-<<<<<<< HEAD
                     <SearchBar />
                     <Booklist books={books}/>
                 </Route>
 
             </Switch>
         </div>
-=======
-                    {/* <SearchBar /> */}
-                    <Booklist apiBooks={books} />
-                </Route>
-                
-          </Switch>
- 
-
-         </div>
->>>>>>> 8181d0bc04afc23d8668a8c0f5c2e6ec80f17f30
     )
 }
 

@@ -8,7 +8,7 @@ function Book({ book , buttonMessage, clickFunction} ) {
     return (
         <>
             <div className="flex gap-2 align-middle justify-center my-3 max-h-30">
-                <img src={defaultImage || imageLinks ? imageLinks.smallThumbnail : imageLinks.thumbnail } alt="" className="object-cover h-80 w-90 shadow-2xl"/>
+                <img src={imageLinks ? imageLinks.smallThumbnail : imageLinks.thumbnail } alt="" className="object-cover h-80 w-90 shadow-2xl"/>
                 <div className="text-left">
                 <h3>{title}</h3>
                 <h3>{pageCount} Pages</h3>

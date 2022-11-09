@@ -1,5 +1,5 @@
 import { Link, Switch, Route } from "react-router-dom";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import CollectedBooks from './CollectedBooks'
 import ReviewList from './ReviewsList'
 import Booklist from './Booklist'
@@ -25,7 +25,7 @@ function MainDisplay(){
     
     const criteriaRef = useRef(criteria);
 
-    let booksUrl = `https://www.googleapis.com/books/v1/volumes?q=philosophy'}`
+    let booksUrl = `https://www.googleapis.com/books/v1/volumes?q=${criteria}`
 
     function getCollectedBooks(){
         fetch('http://localhost:3000/books')
@@ -35,7 +35,13 @@ function MainDisplay(){
     }
     
 
-    
+    const getBooks = useCallback(()=> {
+        fetch(booksUrl)
+        .then(r => r.json())
+        .then(d => {setBooks(d.items)})
+        .catch(e => console.log(e))
+    },[booksUrl])
+
     useEffect(() => {
         fetch(booksUrl)
         .then(r => r.json())
@@ -49,6 +55,7 @@ function MainDisplay(){
 
         if(typedCriteria !== " ") setCriteria(typedCriteria); 
 
+        getBooks()
         
     }
 

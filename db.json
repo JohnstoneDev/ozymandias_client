@@ -12,5 +12,11 @@
       "id": 1
     }
   ],
-  "reviews": []
+  "reviews": [
+    {
+      "id" : 1,
+      "title" : "The Philosophy of Jesus",
+      "comment" : "An Indepth view of Christianity"
+    }
+  ]
 }

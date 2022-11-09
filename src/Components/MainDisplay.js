@@ -115,8 +115,6 @@ function MainDisplay(){
     }
 
         function updateBookReview(passedId,updatedComment){  
-            let patchBook = collectedBooks.find(b => b.id == passedId)    
-
             fetch(`http://localhost:3000/books/${passedId}`,{
                 method : 'PATCH',
                 headers : {

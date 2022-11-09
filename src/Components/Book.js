@@ -17,8 +17,8 @@ function Book({ book} ) {
                 <button>Add To Collection</button>
                 </div>
             </div>
-
         </>
+        
     )
 }
 

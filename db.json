@@ -1,9 +1,16 @@
-{ 
-    "books" : [
-        
-    ], 
-
-    "reviews" : [
-        
-    ]
+{
+  "books": [
+    {
+      "title": "The Philosophy of Jesus",
+      "author": "Peter Kreeft",
+      "publisher": "St Augustine PressInc",
+      "published_date": "2007",
+      "page_count": 162,
+      "image_one": "http://books.google.com/books/content?id=rYldAAAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+      "image_two": "http://books.google.com/books/content?id=rYldAAAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "review": "KIll Jay Z ",
+      "id": 1
+    }
+  ],
+  "reviews": []
 }

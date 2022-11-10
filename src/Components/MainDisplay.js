@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import CollectedBooks from './CollectedBooks'
 import ReviewList from './ReviewsList'
 import Booklist from './Booklist'
+import AuthorList from "./AuthorList";
 
 
 // Main Component, Everything else is nested here and accesses state as props  
@@ -14,6 +15,7 @@ function Navigation(){
             <Link to="/" className='border-b-2 hover:text-slate-500 hover:border-b-amber-300'>Home</Link>
             <Link to="/collection" className='border-b-2  hover:text-slate-500 hover:border-b-amber-300' >Collection</Link>
             <Link to="/reviews" className='border-b-2 hover:text-slate-500 hover:border-b-amber-300'>Reviews</Link>
+            <Link to="/authors" className='border-b-2 hover:text-slate-500 hover:border-b-amber-300'>My Authors</Link>        
         </div>
     )
 }
@@ -23,25 +25,32 @@ function MainDisplay(){
     const [collectedBooks, setCollectedBooks ] = useState([]);
     const [criteria, setCriteria ] = useState('philosophy');
     const [reviews, setReviews ] = useState([]);
+    const [authors, setAuthors ] = useState([]);
 
     const criteriaRef = useRef(criteria);
 
     let booksUrl = `https://www.googleapis.com/books/v1/volumes?q=${criteria}`
 
     function getCollectedBooks(){
-        fetch('http://localhost:3000/books')
+        fetch('http://localhost:9292/books')
         .then(r => r.json())
         .then(d => { setCollectedBooks(d)})
         .catch(e => console.log(e))
     }
 
     function getReviews(){
-        fetch('http://localhost:3000/reviews')
+        fetch('http://localhost:9292/reviews')
         .then(r => r.json())
         .then(d => setReviews(d))
         .catch(e => console.log(e))
     }
     
+    function getAuthors(){
+        fetch('http://localhost:9292/authors')
+        .then(r => r.json())
+        .then(d => setAuthors(d))
+        .catch(e => console.log(e))
+    }
 
     const getBooks = useCallback(()=> {
         fetch(booksUrl)
@@ -88,7 +97,7 @@ function MainDisplay(){
 
         console.log(bookData);
 
-        fetch(`http://localhost:3000/books`,{
+        fetch(`http://localhost:9292/books`,{
             method : "POST",
             headers : {
                 'Content-Type' : "application/json",
@@ -96,16 +105,12 @@ function MainDisplay(){
             body : JSON.stringify(bookData)
         })
         .then(r => r.json())
-        .then(d => {
-            setTimeout(() => {
-                setCollectedBooks([...collectedBooks,d])
-            },3000)
-        })
+        .then(d =>  setCollectedBooks([...collectedBooks,d]))
         .catch(e => console.log(e))
     }
 
     function removeBookFromCollection(passedId){            
-        fetch(`http://localhost:3000/books/${passedId}`,{
+        fetch(`http://localhost:9292/books/${passedId}`,{
             method : "DELETE",
             headers : { "Content-Type" : "application/json"},
         })
@@ -115,7 +120,7 @@ function MainDisplay(){
     }
 
         function updateBookReview(passedId,updatedComment){  
-            fetch(`http://localhost:3000/books/${passedId}`,{
+            fetch(`http://localhost:9292/books/${passedId}`,{
                 method : 'PATCH',
                 headers : {
                     'Content-Type' : "application/json"
@@ -126,10 +131,50 @@ function MainDisplay(){
             })
             .then(r => r.json())
             .then(d => {
+                console.log(d)
+
                 const newBooks = collectedBooks.map(b => {
                    return  b.id === passedId ? b = d : b
                  })
+
                 setCollectedBooks(newBooks)
+            })
+            .catch(e => console.log(e))
+        }
+
+
+        function deleteAllBooks(){
+            fetch('http://localhost:9292/books',{
+                method : "DELETE",
+                headers : {
+                    'Content-Type' : "application/json"
+                }
+            })
+            .then(r => r.json())
+            .then(d => {
+                console.log(d)
+                setCollectedBooks([])
+                setAuthors([])
+                setReviews([])
+            })
+            .catch(e => console.log(e))
+        }
+
+        function updateSpecificReview(receivedId,string){
+            fetch(`http://localhost:9292/reviews/${receivedId}`,{
+                method : "PATCH",
+                headers : { 'Content-Type' : "application/json" },
+                body : JSON.stringify( { 
+                    comment : string
+                })
+            })
+            .then(r => r.json())
+            .then(d => {
+                console.log(d)
+                const newReviews = reviews.map(review => {
+                    return review.id === receivedId ? review = d : review
+                })
+                setReviews(newReviews)
             })
             .catch(e => console.log(e))
         }
@@ -138,18 +183,23 @@ function MainDisplay(){
         getCollectedBooks();
         getBooks()
         getReviews()
+        getAuthors()
     },[getBooks,criteria])
 
     return (
-        <div className='my-4'>
+        <div className='my-4 bg-zinc-800'>
             <Navigation />
             <Switch>
                 <Route path="/collection">
-                    <CollectedBooks books={collectedBooks} clickFunction={removeBookFromCollection} buttonMessage={"Delete Book"} updateBookReview={updateBookReview}/>
+                    <CollectedBooks books={collectedBooks} clickFunction={removeBookFromCollection} buttonMessage={"Delete Book"} updateBookReview={updateBookReview} deleteAllBooks={deleteAllBooks}/>
                 </Route>
 
                 <Route path="/reviews">
-                    <ReviewList reviews={reviews}/>
+                    <ReviewList reviews={reviews} updateSpecificReview={updateSpecificReview}/>
+                </Route>
+
+                <Route path="/authors">
+                    <AuthorList authors={authors}/>
                 </Route>
 
                 <Route path="/">

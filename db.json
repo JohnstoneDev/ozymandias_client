@@ -10,13 +10,24 @@
       "image_two": "http://books.google.com/books/content?id=rYldAAAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
       "review": "This is the way ",
       "id": 1
+    },
+    {
+      "title": "Basic Writings of Nietzsche",
+      "author": "Friedrich Wilhelm Nietzsche",
+      "publisher": "Random House LLC",
+      "published_date": "2000",
+      "page_count": 862,
+      "image_one": "http://books.google.com/books/content?id=CNQDHDO8fwwC&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+      "image_two": "http://books.google.com/books/content?id=CNQDHDO8fwwC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "review": "",
+      "id": 2
     }
   ],
   "reviews": [
     {
-      "id" : 1,
-      "title" : "The Philosophy of Jesus",
-      "comment" : "An Indepth view of Christianity"
+      "id": 1,
+      "title": "The Philosophy of Jesus",
+      "comment": "An Indepth view of Christianity"
     }
   ]
 }

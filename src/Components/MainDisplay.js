@@ -187,7 +187,7 @@ function MainDisplay(){
     },[getBooks,criteria])
 
     return (
-        <div className='my-4 bg-zinc-800'>
+        <div className='my-4 min-h-full bg-zinc-800'>
             <Navigation />
             <Switch>
                 <Route path="/collection">

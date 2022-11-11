@@ -12,7 +12,7 @@ function CollectedBooks({ books, buttonMessage, clickFunction , updateBookReview
     },[books])
 
     return (
-        <div className="h-full bg-zinc-700">
+        <div className="h-screen bg-zinc-700">
             <div className="py-3 text-slate-500 bg-zinc-800 h-full">
                 {books.length <= 0 ? <h3> You have no books !</h3> : <h3> This is your collection !</h3>}
                 {books.map((book) => {

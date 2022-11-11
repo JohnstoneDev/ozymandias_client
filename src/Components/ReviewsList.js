@@ -9,7 +9,7 @@ function ReviewList({ reviews, updateSpecificReview }){
     },[reviews])
     
     return (
-        <div className="min-h-full">
+        <div className="min-h-screen">
             {reviews.length <=0 ? <h3>There are no reviews!</h3> : <h3> This are your reviews </h3>}
             <div className="p-3">
                 {reviews.map(review => {

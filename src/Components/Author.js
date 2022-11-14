@@ -3,8 +3,7 @@ function Author({ author }){
 
     const authorsBooks = books.map(book => {
         return (
-            <div key={book.id}>
-            <h3>Their Books</h3>
+            <div key={book.id} className="flex flex-col mt-2">
             <h4>{book.title}</h4>     
         </div>
         )
@@ -12,8 +11,11 @@ function Author({ author }){
 
     return (
         <>
-            <div className="h-full flex justify-center gap-4">
-                <h2 className="text-slate-400">{name}</h2>
+            <div className="h-full justify-center gap-4  text-left max-w-fit">
+                <div className="">
+                    <h2 className="text-slate-400">{name}</h2>
+                    <h3 className="text-slate-500">Their Books :</h3>
+                </div>
                 {authorsBooks}
             </div>
         </>

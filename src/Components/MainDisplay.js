@@ -105,7 +105,12 @@ function MainDisplay(){
             body : JSON.stringify(bookData)
         })
         .then(r => r.json())
-        .then(d =>  setCollectedBooks([...collectedBooks,d]))
+        .then(d =>  {
+            setCollectedBooks([...collectedBooks,d])
+            getCollectedBooks()
+            getAuthors()
+            getReviews()
+        })
         .catch(e => console.log(e))
     }
 
@@ -115,7 +120,11 @@ function MainDisplay(){
             headers : { "Content-Type" : "application/json"},
         })
         .then(r => r.json())
-        .then(() =>  setCollectedBooks(collectedBooks.filter(book => book.id !== passedId)))
+        .then(() =>  { 
+            setCollectedBooks(collectedBooks.filter(book => book.id !== passedId))
+            getAuthors()
+            getReviews()
+        })
         .catch(e => console.log(e))
     }
 
@@ -138,6 +147,9 @@ function MainDisplay(){
                  })
 
                 setCollectedBooks(newBooks)
+                getCollectedBooks()
+                getReviews()
+                getAuthors()
             })
             .catch(e => console.log(e))
         }
@@ -175,6 +187,9 @@ function MainDisplay(){
                     return review.id === receivedId ? review = d : review
                 })
                 setReviews(newReviews)
+                getReviews()
+                getCollectedBooks()
+                getAuthors()
             })
             .catch(e => console.log(e))
         }
@@ -187,7 +202,7 @@ function MainDisplay(){
     },[getBooks,criteria])
 
     return (
-        <div className='my-4 min-h-full bg-zinc-800'>
+        <div className='my-4 min-h-screen bg-zinc-800'>
             <Navigation />
             <Switch>
                 <Route path="/collection">
